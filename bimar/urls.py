@@ -3,7 +3,9 @@ from bimar.views import (
     NobatDetail,
     EditNobat,
     CreatKhedmat,
-    Payment
+    Payment,
+    KhedmatViewSet,
+    NobatViewSet
 )
 
 urlpatterns = [
@@ -11,5 +13,9 @@ urlpatterns = [
     path('Editnobat/<int:pk', EditNobat.as_view()),
     path('CreateKhedmat', CreatKhedmat.as_view()),
     path('Payment', Payment.as_view()),
+    path("NobatView", NobatViewSet.as_view()),
+    path("KhedmatView", KhedmatViewSet.as_view()),
+
+
 
 ]
