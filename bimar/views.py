@@ -2,9 +2,12 @@ from django.shortcuts import render
 from django.http.response import HttpResponse , JsonResponse
 from .models import Khedmat , Doctor ,Nobat
 from rest_framework.generics import ListAPIView, RetrieveAPIView , CreateAPIView,ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .serialize import CopunSerializer , Transcreate , Factorserialize
-from rest_framework.permissions import IsAuthenticated , IsAdminUser ,AllowAny , 
+from .serializers import khedmatserializer , nobatserializer
+from rest_framework.permissions import IsAuthenticated , IsAdminUser ,AllowAny 
 from rest_framework_simplejwt.views import TokenObtainPairView , token_refresh
+from .permissions import IsSuperUser
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 class login(TokenObtainPairView):
     pass
@@ -14,11 +17,35 @@ class refresh(token_refresh):
 
 class NobatDetail(ListCreateAPIView):
     queryset = Nobat.objects.all()
-    serializer_class = NobatSerializer
+    serializer_class = nobatserializer
+    filter_backends = [DjangoFilterBackend , filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ["bimar_name"]
+    filterset_fields = ['date',"time"]
     def get_permissions(self):
         if self.action == 'POST':
             self.permission_classes = [IsAdminUser]
         elif self.action == 'GET':
-            self.permission_classes =[AllowAny]
-        return super().get_permissions()
+            self.permission_classes =[IsAuthenticated]
+    def get_queryset(self):
+        return Nobat.objects.filter(user=self.request.user)
+    
+class EditNobat(RetrieveUpdateDestroyAPIView):
+    queryset = Nobat.objects.all()
+    serializer_class = nobatserializer
+    permission_classes = [IsAdminUser]
+    
+class CreatKhedmat(CreateAPIView):
+    queryset = Khedmat.objects.all()
+    serializer_class = khedmatserializer
+    permission_classes = [IsAdminUser]
+    
+class Payment(ListAPIView):
+    queryset = Nobat.objects.all()
+    serializer_class = nobatserializer
+    filter_backends = [DjangoFilterBackend , filters.OrderingFilter, filters.SearchFilter]
+    filterset_fields = ['date']
+    permission_classes = [IsSuperUser]
+    
+    
+    
 # Create your views here.
