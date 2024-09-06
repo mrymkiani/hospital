@@ -4,7 +4,7 @@ from .models import Khedmat , Doctor ,Nobat
 from rest_framework.generics import ListAPIView, RetrieveAPIView , CreateAPIView,ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .serializers import khedmatserializer , nobatserializer
 from rest_framework.permissions import IsAuthenticated , IsAdminUser ,AllowAny 
-from rest_framework_simplejwt.views import TokenObtainPairView , token_refresh
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .permissions import IsSuperUser
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
@@ -12,7 +12,7 @@ from rest_framework import filters
 class login(TokenObtainPairView):
     pass
 
-class refresh(token_refresh):
+class refresh(TokenRefreshView):
     pass
 
 class NobatDetail(ListCreateAPIView):
@@ -33,18 +33,24 @@ class EditNobat(RetrieveUpdateDestroyAPIView):
     queryset = Nobat.objects.all()
     serializer_class = nobatserializer
     permission_classes = [IsAdminUser]
+    def get_queryset(self):
+        return Nobat.objects.filter(user=self.request.user)
     
 class CreatKhedmat(CreateAPIView):
     queryset = Khedmat.objects.all()
     serializer_class = khedmatserializer
     permission_classes = [IsAdminUser]
+    def get_queryset(self):
+        return Khedmat.objects.filter(user=self.request.user)
     
 class Payment(ListAPIView):
-    queryset = Nobat.objects.all()
+    queryset = Nobat.objects.filter(pay_status = 'True')
     serializer_class = nobatserializer
     filter_backends = [DjangoFilterBackend , filters.OrderingFilter, filters.SearchFilter]
     filterset_fields = ['date']
     permission_classes = [IsSuperUser]
+    def get_queryset(self):
+        return Nobat.objects.filter(user=self.request.user)
     
     
     

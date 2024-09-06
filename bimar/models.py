@@ -9,7 +9,7 @@ class Doctor(models.Model):
 
 class Khedmat(models.Model):
     title = models.CharField(max_length=10)
-    price = models.DecimalField()
+    price = models.PositiveIntegerField()
     def __str__(self) -> str:
         return self.title
     
@@ -18,6 +18,7 @@ class Nobat(models.Model):
     khedmat_type = models.ForeignKey(Khedmat , on_delete=models.PROTECT)
     date = models.DateTimeField(auto_now_add=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.PROTECT)
+    pay_status = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.bimar_name
