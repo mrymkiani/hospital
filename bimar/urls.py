@@ -4,8 +4,6 @@ from bimar.views import (
     EditNobat,
     CreatKhedmat,
     Payment,
-    KhedmatViewSet,
-    NobatViewSet
 )
 
 urlpatterns = [
