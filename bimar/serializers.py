@@ -3,16 +3,16 @@ from rest_framework import serializers
 
 
 
-class nobatserializer(serializers.ModelSerializer):
+class Nobatserializer(serializers.ModelSerializer):
     
     class meta:
         model = Nobat
-        field = '__all__'
+        fields = '__all__'
 
 
-class khedmatserializer(serializers.ModelSerializer):
+class Khedmatserializer(serializers.ModelSerializer):
     class meta:
         model = Khedmat
-        field = '__all__'
+        fields = '__all__'
 
     
