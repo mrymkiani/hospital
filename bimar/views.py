@@ -7,7 +7,9 @@ from rest_framework.permissions import IsAuthenticated , IsAdminUser ,AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView , token_refresh
 from .permissions import IsSuperUser
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
+from rest_framework import filters, viewsets
+from .serializers import Nobatserializer, Khedmatserializer
+
 
 class login(TokenObtainPairView):
     pass
@@ -46,6 +48,13 @@ class Payment(ListAPIView):
     filterset_fields = ['date']
     permission_classes = [IsSuperUser]
     
+
     
+class NobatViewSet(viewsets.ModelViewSet):
+    queryset = Nobat.objects.all()
+    serializer_class = Nobatserializer
+
+class KhedmatViewSet(viewsets.ModelViewSet):
+    queryset = Khedmat.objects.all()
+    serializer_class = Khedmatserializer
     
-# Create your views here.

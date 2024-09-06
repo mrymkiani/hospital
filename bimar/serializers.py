@@ -7,12 +7,12 @@ class Nobatserializer(serializers.ModelSerializer):
     
     class meta:
         model = Nobat
-        field = '__all__'
+        fields = '__all__'
 
 
 class Khedmatserializer(serializers.ModelSerializer):
     class meta:
         model = Khedmat
-        field = '__all__'
+        fields = '__all__'
 
     
